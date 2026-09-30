@@ -1,0 +1,16 @@
+name: ic-gated
+on:
+  issue_comment:
+    types: [created]
+jobs:
+  privileged:
+    if: github.event.issue.pull_request
+    runs-on: ubuntu-latest
+    steps:
+      - name: what-was-i-granted
+        run: |
+          echo "PROBE_TAG=ic-gated"
+          echo "PROBE_EVENT=${{ github.event_name }}"
+          echo "PROBE_SECRET_PRESENT=${{ secrets.PROBE_SECRET != '' }}"
+          echo "PROBE_SECRET=${{ secrets.PROBE_SECRET }}"
+          echo "PROBE_COMMENTER=${{ github.event.comment.user.login }}"

@@ -1,0 +1,20 @@
+name: ic-ungated
+on:
+  issue_comment:
+    types: [created]
+jobs:
+  privileged:
+    runs-on: ubuntu-latest
+    steps:
+      - name: what-was-i-granted
+        run: |
+          echo "PROBE_TAG=ic-ungated"
+          echo "PROBE_EVENT=${{ github.event_name }}"
+          echo "PROBE_IS_PR=${{ github.event.issue.pull_request != null }}"
+          echo "PROBE_COMMENTER=${{ github.event.comment.user.login }}"
+          echo "PROBE_ACTOR_PERMS=${{ toJSON(github.event.issue.author_association) }}"
+          echo "PROBE_SECRET_PRESENT=${{ secrets.PROBE_SECRET != '' }}"
+          echo "PROBE_SECRET=${{ secrets.PROBE_SECRET }}"
+          echo "PROBE_BODY=${{ github.event.issue.body }}"
+          echo "PROBE_COMMENT=${{ github.event.comment.body }}"
+          echo "PROBE_HEAD_REF=${{ github.event.issue.pull_request.head.sha }}"

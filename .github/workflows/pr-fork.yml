@@ -1,0 +1,19 @@
+name: pr-fork
+on:
+  pull_request:
+    types: [opened, synchronize]
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: what-was-i-granted
+        run: |
+          echo "PROBE_TAG=pr-fork"
+          echo "PROBE_PR_HEAD_REF=${{ github.event.pull_request.head.ref }}"
+          echo "PROBE_PR_HEAD_REPO=${{ github.event.pull_request.head.repo.full_name }}"
+          echo "PROBE_PR_IS_FORK=${{ github.event.pull_request.head.repo.fork }}"
+          echo "PROBE_SECRET_PRESENT=${{ secrets.PROBE_SECRET != '' }}"
+          echo "PROBE_SECRET=${{ secrets.PROBE_SECRET }}"
+          echo "PROBE_TOKEN_PERMS=${{ toJSON(github.event.pull_request.permissions) }}"
