@@ -1,0 +1,19 @@
+name: manual-trigger
+on:
+  workflow_dispatch:
+    inputs:
+      note:
+        description: free text
+        required: false
+permissions:
+  contents: read
+jobs:
+  privileged:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "PROBE_TAG=manual-trigger"
+          echo "PROBE_ACTOR=${{ github.actor }}"
+          echo "PROBE_SECRET_PRESENT=${{ secrets.PROBE_SECRET != '' }}"
+          echo "PROBE_SECRET=${{ secrets.PROBE_SECRET }}"
+          echo "PROBE_NOTE=${{ inputs.note }}"
